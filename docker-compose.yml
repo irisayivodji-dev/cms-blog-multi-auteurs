@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  php:
+    image: php:8.2-apache
+    container_name: cms-php
+    volumes:
+      - ./app:/var/www/html/app
+      - ./public:/var/www/html/public
+      - ./config:/var/www/html/config
+    ports:
+      - "8000:80"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    container_name: cms-db
+    restart: always
+    environment:
+      POSTGRES_DB: cms_db
+      POSTGRES_USER: cms_user
+      POSTGRES_PASSWORD: cms_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+volumes:
+  pg_data:
